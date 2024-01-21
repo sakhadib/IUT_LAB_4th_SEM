@@ -42,7 +42,6 @@ int main() {
     int row, col;
     cin >> row >> col;
 
-    // Use a dynamic 2D array instead of a vector
     int (*arr)[100] = new int[row][100];
 
     for (int i = 0; i < row; i++) {
