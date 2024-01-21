@@ -27,17 +27,23 @@ int findPeak(int* arr, int len){
 int main() {
 
     // Redirect input from input.txt
-    ifstream in("input.txt");
+    ifstream in("../input.txt");
     cin.rdbuf(in.rdbuf());
 
     // Redirect output to output.txt
-    ofstream out("output.txt");
+    ofstream out("../output.txt");
     cout.rdbuf(out.rdbuf());
 
-    int arr[5];
-    for(int i = 0; i < 5; i++){
-        cin >> arr[i];
+    int t;
+    cin >> t;
+    while(t--){
+        int arr[5];
+        for(int i = 0; i < 5; i++){
+            cin >> arr[i];
+        }
+        cout << findPeak(arr, 10) << endl;
     }
-    cout << findPeak(arr, 10) << endl;
+
+    
     return 0;
 }
