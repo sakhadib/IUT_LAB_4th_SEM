@@ -4,7 +4,51 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int find2DPeak(vector<vector<int> > arr, int row, int col){
+int find2DPeak(vector<vector<int> > arr, int rows, int cols){
+    bool flag = false;
+    int X = 0, Y = 0;
+
+    while (!flag)
+    {
+        if(X==0 && Y==0){
+            if(arr[X][Y] >= arr[X+1][Y] && arr[X][Y] >= arr[X][Y+1]){
+                flag = true;
+                return arr[X][Y];
+            }
+            else if(arr[X][Y] < arr[X+1][Y]){
+                X++;
+            }
+            else if(arr[X][Y] < arr[X][Y+1]){
+                Y++;
+            }
+        }
+
+        else if(X==0 && Y==rows-1){
+            if(arr[X][Y] >= arr[X+1][Y] && arr[X][Y] >= arr[X][Y-1]){
+                flag = true;
+                return arr[X][Y];
+            }
+            else if(arr[X][Y] < arr[X+1][Y]){
+                X++;
+            }
+            else if(arr[X][Y] < arr[X][Y-1]){
+                Y--;
+            }
+        }
+
+        else if(X==cols-1 && Y==0){
+            if(arr[X][Y] >= arr[X-1][Y] && arr[X][Y] >= arr[X][Y+1]){
+                flag = true;
+                return arr[X][Y];
+            }
+            else if(arr[X][Y] < arr[X-1][Y]){
+                X--;
+            }
+            else if(arr[X][Y] < arr[X][Y+1]){
+                Y++;
+            }
+        }
+    }
     
 }
 
