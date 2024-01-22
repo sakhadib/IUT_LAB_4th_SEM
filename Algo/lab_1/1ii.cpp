@@ -58,7 +58,7 @@ int main() {
 
         double cpu_time_used = ((double) (end - start));
         // printf("for loop took %f seconds to execute \n", cpu_time_used);
-        cout << "Duration - " << cpu_time_used << endl;
+        cout << n << ", " << cpu_time_used << endl;
     }
 
     return 0;
