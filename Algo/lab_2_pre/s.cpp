@@ -14,25 +14,35 @@ vector<int> randomGen(int len){
 
 }
 
-int findPeak(vector<int> arr){
+bool linearSearch(vector<int> arr, int x){
+    int len = arr.size();
+    for(int i = 0; i < len; i++){
+        if(arr[i] == x){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool binarySearch(vector<int> arr, int x){
     int len = arr.size();
     int left = 0, right = len - 1;
     while(left <= right){
         int mid = (left + right) / 2;
-        if(arr[mid] >= arr[mid - 1] && arr[mid] >= arr[mid + 1]){
-            return arr[mid];
+        if(arr[mid] == x){
+            return true;
         }
-        else if(arr[mid] < arr[mid - 1]){
-            right = mid - 1;
+        else if(arr[mid] < x){
+            left = mid + 1;
         }
         else{
-            left = mid + 1;
+            right = mid - 1;
         }
     
     }
 
-    return -1;
-
+    return false;
 }
 
 int main() {
@@ -47,25 +57,23 @@ int main() {
     vector<int> X;
     vector<int> Y;
 
-
     int t;
     cin >> t;
     while(t--){
-        int n;
+        int n; 
         cin >> n;
-        n*=10;
         vector<int> arr = randomGen(n);
-        X.push_back(n);
+
         clock_t start = clock();
-        int x = findPeak(arr);
+        // bool x = linearSearch(arr, n+1);
+        bool y = binarySearch(arr, n+1);
         clock_t end = clock();
 
         double cpu_time_used = ((double) (end - start));
         // printf("for loop took %f seconds to execute \n", cpu_time_used);
+        X.push_back(n);
         Y.push_back(cpu_time_used);
         arr.clear();
-
-        n+=400;
     }
 
     for(int i=0; i<X.size(); i++){
@@ -78,7 +86,7 @@ int main() {
         cout << Y[i] << ", ";
     }
 
-    // cout << x << endl;
 
+    
     return 0;
 }

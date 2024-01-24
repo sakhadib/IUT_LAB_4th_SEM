@@ -34,23 +34,38 @@ int main() {
     ofstream out("../output.txt");
     cout.rdbuf(out.rdbuf());
 
+    vector<int> X;
+    vector<int> Y;
+
 
     int t;
     cin >> t;
     while(t--){
         int n;
         cin >> n;
+        n*=10;
         vector<int> arr = randomGen(n);
-        
+        X.push_back(n);
         clock_t start = clock();
         int x = findPeak(arr);
         clock_t end = clock();
 
         double cpu_time_used = ((double) (end - start));
         // printf("for loop took %f seconds to execute \n", cpu_time_used);
-        cout << n << " , " << cpu_time_used << endl;
-
+        Y.push_back(cpu_time_used);
         arr.clear();
+
+        n+=400;
+    }
+
+    for(int i=0; i<X.size(); i++){
+        cout << X[i] << ", ";
+    }
+
+    cout << endl;
+
+    for(int i=0; i<Y.size(); i++){
+        cout << Y[i] << ", ";
     }
 
     // cout << x << endl;
