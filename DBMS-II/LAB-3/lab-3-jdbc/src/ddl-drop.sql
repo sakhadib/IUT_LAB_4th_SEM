@@ -129,6 +129,12 @@ create table prereq
 );
 
 
+-- Select the department name having lowest number of students
+select dept_name from student group by dept_name having count(*) = (select min(count(*)) from student group by dept_name);
+
+
+
+
 
 delete from prereq;
 delete from time_slot;

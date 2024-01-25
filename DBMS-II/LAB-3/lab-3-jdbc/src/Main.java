@@ -7,7 +7,7 @@ public class Main {
         String Password = "DBMS_LAB_3";
         String URL = "jdbc:oracle:thin:@localhost:1521:xe";
 
-        String Query = "UPDATE department SET budget = budget * 0.9 WHERE budget > 99999;";
+        String Query = "UPDATE department SET budget = budget * 0.9 WHERE budget > 99999";
 
 
         try{
