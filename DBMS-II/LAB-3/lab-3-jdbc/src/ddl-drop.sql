@@ -1,17 +1,3 @@
-drop table prereq;
-drop table time_slot;
-drop table advisor;
-drop table takes;
-drop table student;
-drop table teaches;
-drop table section;
-drop table instructor;
-drop table course;
-drop table department;
-drop table classroom;
-
-
-
 create table classroom
 (building		varchar(15),
  room_number		varchar(7),
@@ -129,24 +115,6 @@ create table prereq
 );
 
 
--- Select the department name having lowest number of students
-select dept_name from student group by dept_name having count(*) = (select min(count(*)) from student group by dept_name);
-
-
-
-
-
-delete from prereq;
-delete from time_slot;
-delete from advisor;
-delete from takes;
-delete from student;
-delete from teaches;
-delete from section;
-delete from instructor;
-delete from course;
-delete from department;
-delete from classroom;
 insert into classroom values ('Packard', '101', '500');
 insert into classroom values ('Painter', '514', '10');
 insert into classroom values ('Taylor', '3128', '70');
