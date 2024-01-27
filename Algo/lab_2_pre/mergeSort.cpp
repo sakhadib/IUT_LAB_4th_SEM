@@ -14,35 +14,33 @@ vector<int> randomGen(int len){
     return r;
 }
 
-bool linearSearch(vector<int> arr, int x){
-    int len = arr.size();
-    for(int i = 0; i < len; i++){
-        if(arr[i] == x){
-            return true;
-        }
+void mergeSort(vector<int> arr, int left, int right){
+    if(left >= right){
+        return;
     }
+    int mid = (left + right) / 2;
+    mergeSort(arr, left, mid);
+    mergeSort(arr, mid + 1, right);
 
-    return false;
-}
-
-bool binarySearch(vector<int> arr, int x){
-    int len = arr.size();
-    int left = 0, right = len - 1;
-    while(left <= right){
-        int mid = (left + right) / 2;
-        if(arr[mid] == x){
-            return true;
-        }
-        else if(arr[mid] < x){
-            left = mid + 1;
+    int temp[right - left + 1];
+    int i = left, j = mid + 1, k = 0;
+    while(i <= mid && j <= right){
+        if(arr[i] < arr[j]){
+            temp[k++] = arr[i++];
         }
         else{
-            right = mid - 1;
+            temp[k++] = arr[j++];
         }
-    
     }
-
-    return false;
+    while(i <= mid){
+        temp[k++] = arr[i++];
+    }
+    while(j <= right){
+        temp[k++] = arr[j++];
+    }
+    for(int i = left; i <= right; i++){
+        arr[i] = temp[i - left];
+    }
 }
 
 int main() {
@@ -65,8 +63,8 @@ int main() {
         vector<int> arr = randomGen(n);
 
         clock_t start = clock();
-        // bool x = linearSearch(arr, n+1);
-        bool y = binarySearch(arr, n+1);
+        // mergeSort(arr, 0, n-1);
+        sort(arr.begin(), arr.end());
         clock_t end = clock();
 
         double cpu_time_used = ((double) (end - start));
@@ -85,6 +83,7 @@ int main() {
     for(int i=0; i<Y.size(); i++){
         cout << Y[i] << ", ";
     }
+
 
 
     

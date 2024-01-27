@@ -13,14 +13,7 @@ int main() {
     ofstream out("../output.txt");
     cout.rdbuf(out.rdbuf());
 
-    int n = 115;
-    cout << n << endl;
-    for (int i = 1; i <= n; i++)
-    {
-        cout << 4*i*i << endl;
-        // cout << i*700 << endl;
-    }
-    
+
 
 
     
