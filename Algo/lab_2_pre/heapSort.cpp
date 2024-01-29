@@ -15,37 +15,34 @@ vector<int> randomGen(int len){
 }
 
 
-void Max_Heapify(vector<int> arr, int i){
-    int heap_size = arr.size();
+void heapify(vector<int> arr, int n, int i){
+    int largest = i;
     int l = 2*i + 1;
     int r = 2*i + 2;
-    int largest = i;
-    if(l < heap_size && arr[l] > arr[i]){
+
+    if(l < n && arr[l] > arr[largest]){
         largest = l;
     }
-    if(r < heap_size && arr[r] > arr[largest]){
+
+    if(r < n && arr[r] > arr[largest]){
         largest = r;
     }
+
     if(largest != i){
         swap(arr[i], arr[largest]);
-        Max_Heapify(arr, largest);
+        heapify(arr, n, largest);
     }
 }
 
-void Build_Max_Heap(vector<int> arr){
-    int heap_size = arr.size();
-    for(int i = heap_size/2; i >= 0; i--){
-        Max_Heapify(arr, i);
+void heapSort(vector<int> arr){
+    int n = arr.size();
+    for(int i = n/2 - 1; i >= 0; i--){
+        heapify(arr, n, i);
     }
-}
 
-void Heap_Sort(vector<int> arr){
-    Build_Max_Heap(arr);
-    int heap_size = arr.size();
-    for(int i = heap_size - 1; i >= 1; i--){
+    for(int i = n-1; i >= 0; i--){
         swap(arr[0], arr[i]);
-        heap_size--;
-        Max_Heapify(arr, 0);
+        heapify(arr, i, 0);
     }
 }
 
@@ -70,7 +67,7 @@ int main() {
         vector<int> arr = randomGen(n);
 
         clock_t start = clock();
-        Heap_Sort(arr);
+        heapSort(arr);
         clock_t end = clock();
 
         double cpu_time_used = ((double) (end - start));
