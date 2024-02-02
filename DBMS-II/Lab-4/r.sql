@@ -73,13 +73,13 @@ DECLARE
         WHERE st.name = student_name
         ORDER BY 
             CASE ts.day
-                WHEN 'Monday' THEN 1
-                WHEN 'Tuesday' THEN 2
-                WHEN 'Wednesday' THEN 3
-                WHEN 'Thursday' THEN 4
-                WHEN 'Friday' THEN 5
-                WHEN 'Saturday' THEN 6
-                WHEN 'Sunday' THEN 7
+                WHEN 'M' THEN 1
+                WHEN 'T' THEN 2
+                WHEN 'W' THEN 3
+                WHEN 'Th' THEN 4
+                WHEN 'F' THEN 5
+                WHEN 'S' THEN 6
+                WHEN 'Su' THEN 7
             END,
             ts.start_hr,
             ts.start_min;

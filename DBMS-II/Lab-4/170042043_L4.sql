@@ -61,7 +61,41 @@ END;
 
 
 -- task 4 (c)
+DECLARE 
+    student_name student.name%TYPE := &student_name;
+    CURSOR c1 IS
+        SELECT ts.day, ts.start_hr || ':' || ts.start_min as start_time, 
+               ts.end_hr || ':' || ts.end_min as end_time, 
+               s.course_id, c.title, s.building, s.room_number
+        FROM student st
+        JOIN takes t ON st.ID = t.ID
+        JOIN section s ON t.course_id = s.course_id AND t.sec_id = s.sec_id
+        JOIN time_slot ts ON s.time_slot_id = ts.time_slot_id
+        JOIN course c ON s.course_id = c.course_id
+        WHERE st.name = student_name
+        ORDER BY 
+            CASE ts.day
+                WHEN 'M' THEN 1
+                WHEN 'T' THEN 2
+                WHEN 'W' THEN 3
+                WHEN 'Th' THEN 4
+                WHEN 'F' THEN 5
+                WHEN 'S' THEN 6
+                WHEN 'Su' THEN 7
+            END,
+            ts.start_hr,
+            ts.start_min;
 
+BEGIN
+    FOR rec IN c1 LOOP
+        DBMS_OUTPUT.PUT_LINE('<' || rec.day || '>');
+        DBMS_OUTPUT.PUT_LINE('<' || rec.start_time || ' - ' || rec.end_time || '>');
+        DBMS_OUTPUT.PUT_LINE('<' || rec.course_id || ' - ' || rec.title || '>');
+        DBMS_OUTPUT.PUT_LINE('<' || rec.building || ' - ' || rec.room_number || '>');
+        DBMS_OUTPUT.PUT_LINE(' ');
+    END LOOP;
+END;
+/
 
 
 
@@ -100,58 +134,43 @@ END;
 /
 
 
-DECLARE
-    CURSOR c_instructor IS
-        SELECT i.ID, i.name, i.dept_name
-        FROM instructor i
-        LEFT JOIN advisor a ON i.ID = a.i_ID
-        WHERE a.i_ID IS NULL
-        ORDER BY i.dept_name;
-        
-    CURSOR c_student IS
-        SELECT s.ID, s.name, s.dept_name, s.tot_cred
-        FROM student s
-        LEFT JOIN advisor a ON s.ID = a.s_ID
-        WHERE a.s_ID IS NULL
-        ORDER BY s.dept_name, s.tot_cred;
-        
-    instructor_id instructor.ID%TYPE;
-    instructor_name instructor.name%TYPE;
-    instructor_dept instructor.dept_name%TYPE;
 
-    student_id student.ID%TYPE;
-    student_name student.name%TYPE;
-    student_dept student.dept_name%TYPE;
-    student_tot_cred student.tot_cred%TYPE;
-
+-- TASK 3 (E)
+DECLARE 
+    dept_name department.dept_name%TYPE;
+    min_id instructor.ID%TYPE;
+    avg_salary instructor.salary%TYPE;
+    new_id instructor.ID%TYPE;
+    new_instructor instructor%ROWTYPE;
 BEGIN
-    FOR i_rec IN c_instructor LOOP
-        instructor_id := i_rec.ID;
-        instructor_name := i_rec.name;
-        instructor_dept := i_rec.dept_name;
-        
-        FOR s_rec IN c_student LOOP
-            student_id := s_rec.ID;
-            student_name := s_rec.name;
-            student_dept := s_rec.dept_name;
-            student_tot_cred := s_rec.tot_cred;
-            
-            IF instructor_dept = student_dept THEN
-                INSERT INTO advisor VALUES (student_id, instructor_id);
-                DBMS_OUTPUT.PUT_LINE('Student ' || student_name || ' assigned to Instructor ' || instructor_name);
-                EXIT;
-            END IF;
-        END LOOP;
-    END LOOP;
-    
-    FOR i_rec IN c_instructor LOOP
-        instructor_id := i_rec.ID;
-        instructor_name := i_rec.name;
-        instructor_dept := i_rec.dept_name;
-        
-        
-        DBMS_OUTPUT.PUT_LINE('Instructor ' || instructor_name || ' still does not have any students assigned to them.');
-        
-    END LOOP;
+    SELECT dept_name INTO dept_name
+    FROM student
+    GROUP BY dept_name
+    ORDER BY COUNT(*) DESC
+    FETCH FIRST ROW ONLY;
+
+    SELECT MIN(ID) INTO min_id FROM instructor;
+
+    SELECT AVG(salary) INTO avg_salary FROM instructor WHERE dept_name = dept_name;
+
+    new_id := TO_CHAR(TO_NUMBER(min_id) - 1);
+
+    INSERT INTO instructor (ID, name, dept_name, salary)
+    VALUES (new_id, 'John Doe', dept_name, avg_salary);
+
+    SELECT * INTO new_instructor FROM instructor WHERE ID = new_id;
+
+    DBMS_OUTPUT.PUT_LINE('Instructor Information:');
+    DBMS_OUTPUT.PUT_LINE('ID: ' || new_instructor.ID);
+    DBMS_OUTPUT.PUT_LINE('Name: ' || new_instructor.name);
+    DBMS_OUTPUT.PUT_LINE('Department Name: ' || new_instructor.dept_name);
+    DBMS_OUTPUT.PUT_LINE('Salary: ' || new_instructor.salary);
+
+    COMMIT;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('No data found.');
+    WHEN DUP_VAL_ON_INDEX THEN
+        DBMS_OUTPUT.PUT_LINE('Duplicate value on index.');
 END;
 /
