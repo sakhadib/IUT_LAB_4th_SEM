@@ -8,13 +8,13 @@ ll neg_inf = -1e9;
 using namespace std;
 
 int main() {
-    // // Redirect input from input.txt
-    // ifstream in("../input.txt");
-    // cin.rdbuf(in.rdbuf());
+    // Redirect input from input.txt
+    ifstream in("../input.txt");
+    cin.rdbuf(in.rdbuf());
 
-    // // Redirect output to output.txt
-    // ofstream out("../output.txt");
-    // cout.rdbuf(out.rdbuf());
+    // Redirect output to output.txt
+    ofstream out("../output.txt");
+    cout.rdbuf(out.rdbuf());
 
     int t;
     cin>>t;
@@ -27,7 +27,7 @@ int main() {
             cin>>b[i];
         }
         sort(b,b+m);
-        for(int i=0;i<m;i+=--n){
+        for(int i=0; i<m; i+=--n){
             cout<<b[i]<<' ';
         }
         cout<<"1000000000\n";
