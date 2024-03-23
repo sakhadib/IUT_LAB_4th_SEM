@@ -37,8 +37,6 @@ BEGIN
             DBMS_OUTPUT.PUT_LINE(REC.NAME );
         END IF;
     END LOOP;
-
-    COMMIT;
 END;
 /
 

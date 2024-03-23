@@ -3,6 +3,7 @@
 typedef long long ll;
 ll inf = 1e9;
 ll neg_inf = -1e9;
+#define mod 1000000007
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -29,12 +30,6 @@ void quickSort(vector<int>& arr, int low, int high) {
     }
 }
 
-void printArray(int arr[], int size) {
-    for (int i = 0; i < size; i++)
-        cout << arr[i] << " ";
-    cout << endl;
-}
-
 int main() {
     // Redirect input from input.txt
     ifstream in("../input.txt");
@@ -44,11 +39,23 @@ int main() {
     ofstream out("../output.txt");
     cout.rdbuf(out.rdbuf());
 
-    int arr[] = {10, 7, 8, 9, 1, 5};
-    int n = sizeof(arr) / sizeof(arr[0]);
-    // quickSort(arr, 0, n - 1);
-    cout << "Sorted array: \n";
-    printArray(arr, n);
-    return 0;
+    int n;
+    cin >> n;
 
+    vector<int> arr(n);
+
+    for(int i=0; i<n; i++){
+        cin >> arr[i];
+    }
+
+    quickSort(arr, 0, n-1);
+
+    for(int i=0; i<n; i++){
+        cout << arr[i] << " ";
+    }
+    
+
+
+    
+    return 0;
 }
