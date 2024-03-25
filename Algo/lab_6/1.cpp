@@ -56,6 +56,33 @@ ll MSAS(vector<ll>& arr, ll l, ll r){
     return Max(MSAS(arr, l, mid-1), MSAS(arr, mid+1, r), MCS(arr, l, mid, r));
 }
 
+ll MSEQ(vector<ll>& arr, ll n){
+    bool is_neg = false;
+    ll sum = 0;
+    for(ll i=0; i<n; i++){
+        if(arr[i] > 0){
+            sum += arr[i];
+        }
+        else{
+            is_neg = true;
+        }
+    }
+
+    if(sum > 0){
+        return sum;
+    }
+    else{
+        ll max = arr[0];
+        for(ll i=1; i<n; i++){
+            if(arr[i] > max){
+                max = arr[i];
+            }
+        }
+
+        return max;
+    }
+}
+
 
 int main() {
     // // Redirect input from input.txt
@@ -66,18 +93,27 @@ int main() {
     // ofstream out("../output.txt");
     // cout.rdbuf(out.rdbuf());
 
-    ll n;
-    cin >> n;
+    ll t;
+    cin >> t;
 
-    vector<ll> arr(n);
+    while(t--){
+        ll n;
+        cin >> n;
 
-    for(ll i=0; i<n; i++){
-        cin >> arr[i];
+        vector<ll> arr(n);
+
+        for(ll i=0; i<n; i++){
+            cin >> arr[i];
+        }
+
+        ll max_seq = MSEQ(arr, n);
+        ll max_sum = MSAS(arr, 0, n-1);
+        
+
+        cout << max_sum << " " << max_seq << endl;
     }
 
-    ll max_sum = MSAS(arr, 0, n-1);
-
-    cout << max_sum;
+    
 
 
     
