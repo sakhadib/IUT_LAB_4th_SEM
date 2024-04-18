@@ -1,0 +1,156 @@
+-- Task 1
+
+CREATE(c1:CUSTOMER{
+    customer_id: 102,
+    name: 'John',
+    phone_no: '123-456-7890',
+    age: 30,
+    gender: 'Male',
+    country: 'USA'
+}),
+(c2:CUSTOMER{
+    customer_id: 123,
+    name: 'Alice',
+    phone_no: '987-654-3210',
+    age: 25,
+    gender: 'Female',
+    country: 'UK'
+}),
+(c3:CUSTOMER{
+    customer_id: 311,
+    name: 'Bob',
+    phone_no: '555-555-5555',
+    age: 40,
+    gender: 'Male',
+    country: 'Canada'
+})
+
+
+-- Task 2
+CREATE(a1:AUTHOR{
+    author_name: 'J.K. Rowling',
+    country: 'UK'
+})
+
+
+-- Task 3
+CREATE(b1:BOOK{
+    isbn: '1408855652',
+    title: 'Harry Potter and the Philosophers Stone',
+    genre: 'Fantasy',
+    published_year: date({year: 1997}),
+    price: 9.99
+}),
+(b2:BOOK{
+    isbn: '0439064866',
+    title: 'Harry Potter and the Chamber of Secrets',
+    genre: 'Fantasy',
+    published_year: date({year: 1998}),
+    price: 10.99
+})
+
+
+
+-- Task 4
+match(a1:AUTHOR), (b1:BOOK)
+where a1.author_name = 'J.K. Rowling' and b1.isbn = '1408855652'
+create (a1)-[w:WROTE]->(b1)
+
+match(a1:AUTHOR{author_name: 'J.K. Rowling'}), (b2:BOOK{isbn: '0439064866'})
+create (a1)-[w:WROTE]->(b2)
+
+
+-- Task 5
+CREATE(a2:AUTHOR{
+    author_name: 'Stephen King',
+    country: 'USA'
+})-[:WROTE]->(b3:BOOK{
+    isbn: '1982102319',
+    title: 'The Shining',
+    genre: 'Horror',
+    published_year: date({year: 1977}),
+    price: 12.99
+})
+
+CREATE(a3:AUTHOR{
+    author_name: 'Agatha Christie',
+    country: 'UK'
+})-[:WROTE]->(b4:BOOK{
+    isbn: '0062073492',
+    title: 'Murder on the Orient Express',
+    genre: 'Mystery',
+    published_year: date({year: 1934}),
+    price: 8.99
+})
+
+
+-- Task 6
+MATCH(c1:CUSTOMER{customer_id: 123}), (b1:BOOK{isbn:'1408855652'})
+CREATE (c1)-[:purchased{amount:3}]->(b1)
+
+MATCH(c2:CUSTOMER{customer_id: 123}), (b2:BOOK{isbn:'0439064866'})
+CREATE (c2)-[:purchased{amount:1}]->(b2)
+
+MATCH(c3:CUSTOMER{customer_id: 311}), (b3:BOOK{isbn:'0062073492'})
+CREATE (c3)-[:purchased{amount:3}]->(b3)
+
+MATCH(c4:CUSTOMER{customer_id: 102}), (b4:BOOK{isbn:'0062073492'})
+CREATE (c4)-[:purchased{amount:3}]->(b4)
+
+
+-- Task 7
+MATCH(c:CUSTOMER{customer_id: 123}), (b:BOOK{isbn:'1408855652'})
+CREATE (c)-[:rated{rating:5, rating_date: date('2021-02-11')}]->(b)
+
+MATCH(c:CUSTOMER{customer_id: 311}), (b:BOOK{isbn:'1408855652'})
+CREATE (c)-[:rated{rating:3, rating_date: date('2022-04-19')}]->(b)
+
+MATCH(c:CUSTOMER{customer_id: 311}), (b:BOOK{isbn:'0062073492'})
+CREATE (c)-[:rated{rating:4, rating_date: date('2024-01-09')}]->(b)
+
+MATCH(c:CUSTOMER{customer_id: 102}), (b:BOOK{isbn:'0062073492'})
+CREATE (c)-[:rated{rating:5, rating_date: date('2023-04-04')}]->(b)
+
+--! MATCH(c:CUSTOMER{customer_id: 123}), (b:BOOK{isbn:'1408855652'})
+--! CREATE (c)-[:rated{rating:5, rating_date: date('2021-02-11')}]->(b)
+
+--! MATCH(c:CUSTOMER{customer_id: 123}), (b:BOOK{isbn:'1408855652'})
+--! CREATE (c)-[:rated{rating:2, rating_date: date('2021-02-11')}]->(b)
+
+
+-- Task 8
+MATCH(c1:CUSTOMER{customer_id: 123}), (c2:CUSTOMER{customer_id: 311})
+CREATE (c1)-[:follows]->(c2)
+
+MATCH(c1:CUSTOMER{customer_id: 311}), (c2:CUSTOMER{customer_id: 123})
+CREATE (c1)-[:follows]->(c2)
+
+MATCH(c1:CUSTOMER{customer_id: 311}), (c2:CUSTOMER{customer_id: 102})
+CREATE (c1)-[:follows]->(c2)
+
+MATCH(c1:CUSTOMER{customer_id: 123}), (a1:AUTHOR{author_name: 'J.K. Rowling'})
+CREATE (c1)-[:follows]->(a1)
+
+MATCH(c1:CUSTOMER{customer_id: 311}), (a1:AUTHOR{author_name: 'Agatha Christie'})
+CREATE (c1)-[:follows]->(a1)
+
+MATCH(c1:CUSTOMER{customer_id: 102}), (a1:AUTHOR{author_name: 'Agatha Christie'})
+CREATE (c1)-[:follows]->(a1)
+
+
+-- Task 9 = DUMPED
+
+-- Task 10
+--a
+MATCH(c:CUSTOMER)-[r:rated]->(b:BOOK) return b
+
+--b
+MATCH r=()-[f:follows]->() return r
+
+--c
+MATCH (c:CUSTOMER)-[r:rated]->(b:BOOK)
+return AVG(r.rating)
+
+--d
+MATCH (b:BOOK) return b order by b.price desc skip 1 limit 1
+

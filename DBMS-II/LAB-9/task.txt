@@ -1,0 +1,129 @@
+db.createCollection("user",
+    {
+        validator : {
+            $jsonSchema: {
+                required: ["name", "email", "password"],
+                properties: {
+                    name: {
+                        bsonType: "string",
+                        description: "must be a string and is required"
+                    },
+                    email: {
+                        bsonType: "string",
+                        description: "must be a string and is required"
+                    },
+                    password: {
+                        bsonType: "string",
+                        description: "must be a string and is required"
+                    }
+                }
+            }
+        }
+    }
+);
+
+db.createCollection("Post",
+{
+    validator: {
+        $jsonSchema: {
+            required: ["content"],
+            properties: {
+                content: {
+                    bsonType: "string",
+                    description: "must be a string and is required"
+                }
+            }
+        }
+    }
+});
+
+
+
+
+db.user.insertOne(
+    {
+        name : "Khalid Hasan",
+        email : "khalid@gmail.com",
+        password : "abcdefg"
+    }
+);
+
+db.user.insertOne(
+    {
+        name : "Tahsin Islam",
+        email : "Tislam@gmail.com",
+        password : "zyxw",
+        Hobbies : ["Painting", "Driving", "Coding"]
+    }
+);
+
+
+db.user.insertMany(
+    [
+        {
+            name : "Tauhid",
+            email : "tau@q.com",
+            password : "qwertevsfv"
+        },
+        {
+            name : "esham",
+            email : "esham@q.com",
+            password : "qwerteg"
+        },
+        {
+            name : "Box",
+            email : "box@q.com",
+            password : "qwertdrf"
+        }
+    ]
+);
+
+
+db.Post.insertMany(
+    [
+        {
+            content : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed ipsum velit. Ut vel nulla a mi aliquet aliquam ut eget erat. Aliquam a sodales eros",
+            time : "10 May, 2023"
+        },
+        {
+            content : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed ipsum velit. Ut vel nulla a mi aliquet aliquam ut eget erat. Aliquam a sodales eros",
+            time : "25 May, 2023"
+        },
+        {
+            content : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed ipsum velit. Ut vel nulla a mi aliquet aliquam ut eget erat. Aliquam a sodales eros",
+            time : "6 May, 2023"
+        },
+        {
+            content : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed ipsum velit. Ut vel nulla a mi aliquet aliquam ut eget erat. Aliquam a sodales eros",
+            time : "13 May, 2023"
+        }
+    ]
+);
+
+
+
+
+
+db.user.updateOne(
+    {name : "Khalid Hasan"},
+    {
+        $push:{
+            friends : {
+                $each : ["Tahsin Islam", "Tauhid", "esham", "Box"]
+            }
+        }
+    }
+);
+
+
+db.user.updateMany(
+    {name : "Tahsin Islam"},
+    {
+        $push:{
+            friends : {
+                $each : ["Tauhid", "esham", "Box"]
+            }
+        }
+    }
+);
+
